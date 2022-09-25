@@ -1,29 +1,46 @@
 import "./styles/style.css";
 import React from "react";
+import Personal from "./components/Personal";
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
       personalInfo: {
-        fullName: "",
-        professsion: "",
+        fullName: "sad",
+        profession: "",
         email: "",
         phone: "",
       },
-      education: {
-        schoolName: "",
-        startYear: "",
-        endYear: "",
-      },
-      workExperience: {
-        companyName: "",
-        startYear: "",
-        endYear: "",
-        jobRole: "",
-      },
+      educations: [
+        {
+          schoolName: "",
+          startYear: "",
+          endYear: "",
+          id: Math.round(Math.random() * 100000),
+        },
+      ],
+      workExperiences: [
+        {
+          companyName: "",
+          startYear: "",
+          endYear: "",
+          jobRole: "",
+          id: Math.round(Math.random() * 100000),
+        },
+      ],
     };
+    this.handleChange = this.handleChange.bind(this);
   }
-
+  handleChange = (e) => {
+    const value = e.target.value;
+    console.log(value);
+    this.setState((prevstate) => ({
+      personalInfo: {
+        ...prevstate.personalInfo,
+        [e.target.name]: value,
+      },
+    }));
+  };
   render() {
     return (
       <div>
@@ -31,19 +48,10 @@ export default class App extends React.Component {
           <h1>CV buildler</h1>
         </div>
         <section className="personalInfo">
-          <h3>Personal Information</h3>
-          <form className="personalForm">
-            <label htmlFor="fullName">Full Name:</label>
-            <input className="fullName" id="fullName" name="fullName"></input>
-            <label htmlFor="prof">Profession:</label>
-            <input className="prof" id="prof" name="prof"></input>
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email"></input>
-            <label htmlFor="phone" id="phone">
-              Phone Number:
-            </label>
-            <input type="tel"></input>
-          </form>
+          <Personal
+            personalInfo={this.state.personalInfo}
+            handleChange={this.handleChange}
+          />
         </section>
 
         <section className="educationInfo">
