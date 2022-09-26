@@ -1,10 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 
-export default class Personal extends React.Component {
-  //   const [values, setValues] = React.useState(persInfo);
-  //   const handleChange = (e) => {
-  //     setValues({ ...values, [e.target.name]: e.target.value });
-  //   };
+export default class Personal extends Component {
   render() {
     return (
       <>

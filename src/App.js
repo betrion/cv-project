@@ -1,39 +1,37 @@
 import "./styles/style.css";
 import React from "react";
 import Personal from "./components/Personal";
+import Education from "./components/Education";
+
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
       personalInfo: {
-        fullName: "sad",
+        fullName: "",
         profession: "",
         email: "",
         phone: "",
       },
-      educations: [
-        {
-          schoolName: "",
-          startYear: "",
-          endYear: "",
-          id: Math.round(Math.random() * 100000),
-        },
-      ],
+      educations: [],
       workExperiences: [
         {
+          id: Math.round(Math.random() * 10000),
           companyName: "",
           startYear: "",
           endYear: "",
           jobRole: "",
-          id: Math.round(Math.random() * 100000),
         },
       ],
     };
     this.handleChange = this.handleChange.bind(this);
+    this.addEducation = this.addEducation.bind(this);
+    this.handleEduChange = this.handleEduChange.bind(this);
+    this.addEduform = this.addEduform.bind(this);
+    this.deleteForm = this.deleteForm.bind(this);
   }
   handleChange = (e) => {
     const value = e.target.value;
-    console.log(value);
     this.setState((prevstate) => ({
       personalInfo: {
         ...prevstate.personalInfo,
@@ -41,12 +39,55 @@ export default class App extends React.Component {
       },
     }));
   };
+  handleEduChange = (e) => {
+    const value = e.target.value;
+    this.setState((prevstate) => ({
+      educations: {
+        ...prevstate.educations,
+        [e.target.name]: value,
+      },
+    }));
+  };
+  addEducation = () => {
+    this.setState((prevstate) => ({
+      educations: [
+        ...prevstate.educations,
+        {
+          id: Math.round(Math.random() * 10000),
+          schoolName: "s",
+          startYear: "",
+          endYear: "",
+        },
+      ],
+    }));
+  };
+  addEduform = () => {
+    return this.state.educations.map((education) => {
+      return (
+        <Education
+          eduProps={education}
+          key={education.id}
+          handleEduChange={this.handleEduChange}
+          deleteForm={this.deleteForm}
+          formId={education.id}
+        />
+      );
+    });
+  };
+  deleteForm = (e) => {
+    // console.log(e.target.id);
+    e.preventDefault();
+    const filteredEducations = this.state.educations.filter((education) => {
+      return parseInt(education.id) !== parseInt(e.target.id);
+    });
+    this.setState({
+      educations: [...filteredEducations],
+    });
+  };
   render() {
     return (
       <div>
-        <div className="app">
-          <h1>CV buildler</h1>
-        </div>
+        <h1>CV builder</h1>
         <section className="personalInfo">
           <Personal
             personalInfo={this.state.personalInfo}
@@ -54,35 +95,14 @@ export default class App extends React.Component {
           />
         </section>
 
-        <section className="educationInfo">
-          <h3>Education</h3>
-          <form className="eduForm">
-            <label htmlFor="schoolName">Name of School</label>
-            <input
-              className="schoolName"
-              id="schoolName"
-              name="schoolName"
-            ></input>
-            <label
-              htmlFor="courseStudied"
-              id="courseStudied"
-              name="courseStudied"
-            ></label>
-            <label htmlFor="startYear">Start Year</label>
-            <input
-              className="startYear"
-              id="startYear"
-              name="startYear"
-            ></input>
-            <label htmlFor="endYear">End Year</label>
-            <input className="endYear" id="endYear" name="endYear"></input>
-            <button className="deleteBtn">Delete Form</button>
-          </form>
-          <button className="eduBtn">Add Education</button>
-        </section>
+        <h3>Education</h3>
+        <section className="educationInfo">{this.addEduform()}</section>
+        <button className="eduBtn" onClick={this.addEducation}>
+          Add Education
+        </button>
 
+        <h3>Work Experience</h3>
         <section className="workInfo">
-          <h3>Work Experience</h3>
           <form className="workForm">
             <label htmlFor="companyName">Company Name</label>
             <input
