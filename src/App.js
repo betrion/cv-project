@@ -40,13 +40,14 @@ export default class App extends React.Component {
     }));
   };
   handleEduChange = (e) => {
-    const value = e.target.value;
-    this.setState((prevstate) => ({
-      educations: {
-        ...prevstate.educations,
-        [e.target.name]: value,
-      },
-    }));
+    // ružno odrađeno, izvuci objekt iz statea, uredi ga i zabij nazad..
+    const eduProp = [...this.state.educations];
+    const eduPropIndex = eduProp.findIndex(
+      (eduValue) =>
+        parseInt(eduValue.id) === parseInt(e.target.parentElement.id)
+    );
+    eduProp[eduPropIndex][e.target.name] = e.target.value;
+    this.setState({ educations: eduProp });
   };
   addEducation = () => {
     this.setState((prevstate) => ({
@@ -54,7 +55,7 @@ export default class App extends React.Component {
         ...prevstate.educations,
         {
           id: Math.round(Math.random() * 10000),
-          schoolName: "s",
+          schoolName: "",
           startYear: "",
           endYear: "",
         },
@@ -86,49 +87,52 @@ export default class App extends React.Component {
   };
   render() {
     return (
-      <div>
-        <h1>CV builder</h1>
-        <section className="personalInfo">
-          <Personal
-            personalInfo={this.state.personalInfo}
-            handleChange={this.handleChange}
-          />
-        </section>
+      <div className="pageContainer">
+        <div className="contentWrapper">
+          <h1>CV builder</h1>
+          <section className="personalInfo">
+            <Personal
+              personalInfo={this.state.personalInfo}
+              handleChange={this.handleChange}
+            />
+          </section>
 
-        <h3>Education</h3>
-        <section className="educationInfo">{this.addEduform()}</section>
-        <button className="eduBtn" onClick={this.addEducation}>
-          Add Education
-        </button>
+          <h3>Education</h3>
+          <section className="educationInfo">{this.addEduform()}</section>
+          <button className="eduBtn" onClick={this.addEducation}>
+            Add Education
+          </button>
 
-        <h3>Work Experience</h3>
-        <section className="workInfo">
-          <form className="workForm">
-            <label htmlFor="companyName">Company Name</label>
-            <input
-              className="companyName"
-              id="companyName"
-              name="companyName"
-            ></input>
-            <label
-              htmlFor="courseStudied"
-              id="courseStudied"
-              name="courseStudied"
-            ></label>
-            <label htmlFor="startYear">Start Year</label>
-            <input
-              className="startYear"
-              id="startYear"
-              name="startYear"
-            ></input>
-            <label htmlFor="endYear">End Year</label>
-            <input className="endYear" id="endYear" name="endYear"></input>
-            <label htmlFor="jobRole">Job Role</label>
-            <input type="text" className="jobRole" id="jobRole" />
-            <button className="deleteBtn">Delete Form</button>
-          </form>
-          <button className="eduBtn">Add Work Experience</button>
-        </section>
+          <h3>Work Experience</h3>
+          <section className="workInfo">
+            <form className="workForm">
+              <label htmlFor="companyName">Company Name</label>
+              <input
+                className="companyName"
+                id="companyName"
+                name="companyName"
+              ></input>
+              <label
+                htmlFor="courseStudied"
+                id="courseStudied"
+                name="courseStudied"
+              ></label>
+              <label htmlFor="startYear">Start Year</label>
+              <input
+                className="startYear"
+                id="startYear"
+                name="startYear"
+              ></input>
+              <label htmlFor="endYear">End Year</label>
+              <input className="endYear" id="endYear" name="endYear"></input>
+              <label htmlFor="jobRole">Job Role</label>
+              <input type="text" className="jobRole" id="jobRole" />
+              <button className="deleteBtn">Delete Form</button>
+            </form>
+            <button className="eduBtn">Add Work Experience</button>
+          </section>
+          <footer>Made by Dean</footer>
+        </div>
       </div>
     );
   }
