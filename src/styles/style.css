@@ -1,11 +1,22 @@
 body {
   background-color: #f8f8f8;
 }
+
+.pageContainer {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* .contentWrapper {
+  padding-bottom: 2.5rem;
+} */
+
 .personalForm,
 .eduForm,
 .workForm {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   max-width: 35vw;
   border: 1px solid white;
   border-radius: 3%;
@@ -50,4 +61,15 @@ button {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+footer {
+  background-color: #ddc4e475;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1.5rem;
+  box-sizing: border-box;
 }
