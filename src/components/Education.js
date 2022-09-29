@@ -13,7 +13,7 @@ export default class Education extends Component {
             id="schoolName"
             name="schoolName"
             value={this.props.eduProps.schoolName}
-            onChange={this.props.handleEduChange}
+            onChange={this.props.handleQualificationChange}
           ></input>
           <label
             htmlFor="courseStudied"
@@ -26,7 +26,7 @@ export default class Education extends Component {
             id="startYear"
             name="startYear"
             value={this.props.eduProps.startYear}
-            onChange={this.props.handleEduChange}
+            onChange={this.props.handleQualificationChange}
           ></input>
           <label htmlFor="endYear">End Year</label>
           <input
@@ -34,7 +34,7 @@ export default class Education extends Component {
             id="endYear"
             name="endYear"
             value={this.props.eduProps.endYear}
-            onChange={this.props.handleEduChange}
+            onChange={this.props.handleQualificationChange}
           ></input>
           <button
             className="deleteBtn"

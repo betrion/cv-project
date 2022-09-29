@@ -2,6 +2,8 @@ import "./styles/style.css";
 import React from "react";
 import Personal from "./components/Personal";
 import Education from "./components/Education";
+import WorkEx from "./components/WorkEx";
+import dummyData from "./components/dummyData";
 
 export default class App extends React.Component {
   constructor() {
@@ -14,21 +16,14 @@ export default class App extends React.Component {
         phone: "",
       },
       educations: [],
-      workExperiences: [
-        {
-          id: Math.round(Math.random() * 10000),
-          companyName: "",
-          startYear: "",
-          endYear: "",
-          jobRole: "",
-        },
-      ],
+      workExperiences: [],
     };
     this.handleChange = this.handleChange.bind(this);
-    this.addEducation = this.addEducation.bind(this);
-    this.handleEduChange = this.handleEduChange.bind(this);
-    this.addEduform = this.addEduform.bind(this);
+    this.addQualification = this.addQualification.bind(this);
+    this.handleQualificationChange = this.handleQualificationChange.bind(this);
+    this.renderForms = this.renderForms.bind(this);
     this.deleteForm = this.deleteForm.bind(this);
+    this.fillWithDummyData = this.fillWithDummyData.bind(this);
   }
   handleChange = (e) => {
     const value = e.target.value;
@@ -39,57 +34,120 @@ export default class App extends React.Component {
       },
     }));
   };
-  handleEduChange = (e) => {
+  fillWithDummyData = () => {
+    return this.setState(dummyData);
+  };
+  handleQualificationChange = (e) => {
     // ružno odrađeno, izvuci objekt iz statea, uredi ga i zabij nazad..
-    const eduProp = [...this.state.educations];
-    const eduPropIndex = eduProp.findIndex(
-      (eduValue) =>
-        parseInt(eduValue.id) === parseInt(e.target.parentElement.id)
-    );
-    eduProp[eduPropIndex][e.target.name] = e.target.value;
-    this.setState({ educations: eduProp });
-  };
-  addEducation = () => {
-    this.setState((prevstate) => ({
-      educations: [
-        ...prevstate.educations,
-        {
-          id: Math.round(Math.random() * 10000),
-          schoolName: "",
-          startYear: "",
-          endYear: "",
-        },
-      ],
-    }));
-  };
-  addEduform = () => {
-    return this.state.educations.map((education) => {
-      return (
-        <Education
-          eduProps={education}
-          key={education.id}
-          handleEduChange={this.handleEduChange}
-          deleteForm={this.deleteForm}
-          formId={education.id}
-        />
+    if (e.target.parentElement.className === "eduForm") {
+      const eduProp = [...this.state.educations];
+      const eduPropIndex = eduProp.findIndex(
+        (eduValue) =>
+          parseInt(eduValue.id) === parseInt(e.target.parentElement.id)
       );
-    });
+      eduProp[eduPropIndex][e.target.name] = e.target.value;
+      this.setState({ educations: eduProp });
+    }
+    if (e.target.parentElement.className === "workForm") {
+      const workProp = [...this.state.workExperiences];
+      const workPropIndex = workProp.findIndex(
+        (workValue) =>
+          parseInt(workValue.id) === parseInt(e.target.parentElement.id)
+      );
+      workProp[workPropIndex][e.target.name] = e.target.value;
+      this.setState({ workExperiences: workProp });
+    }
+  };
+
+  addQualification = (targetBtn) => {
+    if (targetBtn.target.className === "eduBtn") {
+      return this.setState((prevstate) => ({
+        educations: [
+          ...prevstate.educations,
+          {
+            id: Math.round(Math.random() * 10000),
+            schoolName: "",
+            startYear: "",
+            endYear: "",
+          },
+        ],
+      }));
+    }
+    if (targetBtn.target.className === "workBtn") {
+      return this.setState((prevstate) => ({
+        workExperiences: [
+          ...prevstate.workExperiences,
+          {
+            id: Math.round(Math.random() * 10000),
+            companyName: "",
+            startYear: "",
+            endYear: "",
+            jobRole: "",
+          },
+        ],
+      }));
+    }
+  };
+
+  //Reusable komponenta? xD
+  renderForms = (targetForm) => {
+    if (targetForm === "educations") {
+      return this.state[targetForm].map((qualification) => {
+        return (
+          <Education
+            eduProps={qualification}
+            key={qualification.id}
+            handleQualificationChange={this.handleQualificationChange}
+            deleteForm={this.deleteForm}
+            formId={qualification.id}
+          />
+        );
+      });
+    }
+    if (targetForm === "workExperiences") {
+      return this.state[targetForm].map((qualification) => {
+        return (
+          <WorkEx
+            workProps={qualification}
+            key={qualification.id}
+            handleQualificationChange={this.handleQualificationChange}
+            deleteForm={this.deleteForm}
+            formId={qualification.id}
+          />
+        );
+      });
+    }
   };
   deleteForm = (e) => {
-    // console.log(e.target.id);
     e.preventDefault();
-    const filteredEducations = this.state.educations.filter((education) => {
-      return parseInt(education.id) !== parseInt(e.target.id);
+    const filteredQualifications = this.state[
+      e.target.parentElement.className === "eduForm"
+        ? "educations"
+        : "workExperiences"
+    ].filter((qualification) => {
+      return parseInt(qualification.id) !== parseInt(e.target.id);
     });
-    this.setState({
-      educations: [...filteredEducations],
-    });
+    if (e.target.parentElement.className === "eduForm") {
+      return this.setState({
+        educations: [...filteredQualifications],
+      });
+    }
+    if (e.target.parentElement.className === "workForm") {
+      return this.setState({
+        workExperiences: [...filteredQualifications],
+      });
+    }
   };
   render() {
     return (
       <div className="pageContainer">
         <div className="contentWrapper">
           <h1>CV builder</h1>
+          <button className="dummyBtn" onClick={this.fillWithDummyData}>
+            Fill with dummy data
+          </button>
+          <section className="cvPreview hidden"></section>
+          <button className="previewToggle">Show CV</button>
           <section className="personalInfo">
             <Personal
               personalInfo={this.state.personalInfo}
@@ -98,39 +156,21 @@ export default class App extends React.Component {
           </section>
 
           <h3>Education</h3>
-          <section className="educationInfo">{this.addEduform()}</section>
-          <button className="eduBtn" onClick={this.addEducation}>
+          <button className="eduBtn" onClick={this.addQualification}>
             Add Education
           </button>
+          <section className="educationInfo">
+            {this.renderForms("educations")}
+          </section>
 
           <h3>Work Experience</h3>
+          <button className="workBtn" onClick={this.addQualification}>
+            Add Work Experience
+          </button>
           <section className="workInfo">
-            <form className="workForm">
-              <label htmlFor="companyName">Company Name</label>
-              <input
-                className="companyName"
-                id="companyName"
-                name="companyName"
-              ></input>
-              <label
-                htmlFor="courseStudied"
-                id="courseStudied"
-                name="courseStudied"
-              ></label>
-              <label htmlFor="startYear">Start Year</label>
-              <input
-                className="startYear"
-                id="startYear"
-                name="startYear"
-              ></input>
-              <label htmlFor="endYear">End Year</label>
-              <input className="endYear" id="endYear" name="endYear"></input>
-              <label htmlFor="jobRole">Job Role</label>
-              <input type="text" className="jobRole" id="jobRole" />
-              <button className="deleteBtn">Delete Form</button>
-            </form>
-            <button className="eduBtn">Add Work Experience</button>
+            {this.renderForms("workExperiences")}
           </section>
+
           <footer>Made by Dean</footer>
         </div>
       </div>

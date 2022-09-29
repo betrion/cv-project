@@ -33,18 +33,23 @@ label {
 .deleteBtn,
 .eduBtn,
 .workBtn,
-.previewBtn {
+.previewBtn,
+.previewToggle,
+.dummyBtn {
   background-color: #ffffff;
   border: #ffffff;
   color: #1c181d;
   font-size: 14px;
   font-weight: 600;
   padding: 10px;
-  margin: 10px 0;
+  margin: 10px 10px;
   -webkit-box-shadow: -1px 0px 19px 5px rgba(0, 0, 0, 0.31);
   -moz-box-shadow: -1px 0px 19px 5px rgba(0, 0, 0, 0.31);
   box-shadow: -1px 0px 19px 5px rgba(0, 0, 0, 0.199);
   border-radius: 3%;
+}
+button:hover {
+  filter: brightness(80%);
 }
 
 .deleteBtn {
@@ -57,7 +62,8 @@ label {
 button {
   cursor: pointer;
 }
-.educationInfo {
+.educationInfo,
+.workInfo {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
@@ -72,4 +78,14 @@ footer {
   right: 0;
   height: 1.5rem;
   box-sizing: border-box;
+}
+
+.hidden {
+  display: none;
+}
+
+.dummyBtn,
+.previewToggle {
+  background-color: black;
+  color: white;
 }
