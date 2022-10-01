@@ -4,6 +4,7 @@ import Personal from "./components/Personal";
 import Education from "./components/Education";
 import WorkEx from "./components/WorkEx";
 import dummyData from "./components/dummyData";
+import PreviewCV from "./components/PreviewCV";
 
 export default class App extends React.Component {
   constructor() {
@@ -17,6 +18,7 @@ export default class App extends React.Component {
       },
       educations: [],
       workExperiences: [],
+      editState: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.addQualification = this.addQualification.bind(this);
@@ -24,6 +26,7 @@ export default class App extends React.Component {
     this.renderForms = this.renderForms.bind(this);
     this.deleteForm = this.deleteForm.bind(this);
     this.fillWithDummyData = this.fillWithDummyData.bind(this);
+    this.toggleModes = this.toggleModes.bind(this);
   }
   handleChange = (e) => {
     const value = e.target.value;
@@ -33,6 +36,9 @@ export default class App extends React.Component {
         [e.target.name]: value,
       },
     }));
+  };
+  toggleModes = () => {
+    return this.setState({ editState: !this.state.editState });
   };
   fillWithDummyData = () => {
     return this.setState(dummyData);
@@ -143,35 +149,44 @@ export default class App extends React.Component {
       <div className="pageContainer">
         <div className="contentWrapper">
           <h1>CV builder</h1>
+          <button className="previewToggle" onClick={this.toggleModes}>
+            {this.state.editState ? "Show CV" : "Edit CV"}
+          </button>
           <button className="dummyBtn" onClick={this.fillWithDummyData}>
             Fill with dummy data
           </button>
-          <section className="cvPreview hidden"></section>
-          <button className="previewToggle">Show CV</button>
-          <section className="personalInfo">
-            <Personal
-              personalInfo={this.state.personalInfo}
-              handleChange={this.handleChange}
-            />
-          </section>
+          <div
+            className={("previewMode", this.state.editState ? "hidden" : "")}
+          >
+            <PreviewCV props={this.state} />
+          </div>
 
-          <h3>Education</h3>
-          <button className="eduBtn" onClick={this.addQualification}>
-            Add Education
-          </button>
-          <section className="educationInfo">
-            {this.renderForms("educations")}
-          </section>
+          <div className={("editMode", this.state.editState ? "" : "hidden")}>
+            <section className="personalInfo">
+              <Personal
+                personalInfo={this.state.personalInfo}
+                handleChange={this.handleChange}
+              />
+            </section>
 
-          <h3>Work Experience</h3>
-          <button className="workBtn" onClick={this.addQualification}>
-            Add Work Experience
-          </button>
-          <section className="workInfo">
-            {this.renderForms("workExperiences")}
-          </section>
+            <h3>Education</h3>
+            <button className="eduBtn" onClick={this.addQualification}>
+              Add Education
+            </button>
+            <section className="educationInfo">
+              {this.renderForms("educations")}
+            </section>
 
-          <footer>Made by Dean</footer>
+            <h3>Work Experience</h3>
+            <button className="workBtn" onClick={this.addQualification}>
+              Add Work Experience
+            </button>
+            <section className="workInfo">
+              {this.renderForms("workExperiences")}
+            </section>
+
+            <footer>Made by Dean</footer>
+          </div>
         </div>
       </div>
     );
