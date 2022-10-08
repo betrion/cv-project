@@ -1,50 +1,48 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class Education extends Component {
-  render() {
-    // const [eduForm] = this.props.map();
-    // function educationForm() {}
-    return (
-      <>
-        <form className="eduForm" id={this.props.formId}>
-          <label htmlFor="schoolName">Name of School</label>
-          <input
-            className="schoolName"
-            id="schoolName"
-            name="schoolName"
-            value={this.props.eduProps.schoolName}
-            onChange={this.props.handleQualificationChange}
-          ></input>
-          <label
-            htmlFor="courseStudied"
-            id="courseStudied"
-            name="courseStudied"
-          ></label>
-          <label htmlFor="startYear">Start Year</label>
-          <input
-            className="startYear"
-            id="startYear"
-            name="startYear"
-            value={this.props.eduProps.startYear}
-            onChange={this.props.handleQualificationChange}
-          ></input>
-          <label htmlFor="endYear">End Year</label>
-          <input
-            className="endYear"
-            id="endYear"
-            name="endYear"
-            value={this.props.eduProps.endYear}
-            onChange={this.props.handleQualificationChange}
-          ></input>
-          <button
-            className="deleteBtn"
-            onClick={this.props.deleteForm}
-            id={this.props.formId}
-          >
-            Delete Form
-          </button>
-        </form>
-      </>
-    );
-  }
-}
+const Education = (props) => {
+  return (
+    <>
+      <form className="eduForm" id={props.formId}>
+        <label htmlFor="schoolName">Name of School</label>
+        <input
+          className="schoolName"
+          id="schoolName"
+          name="schoolName"
+          value={props.eduProps.schoolName}
+          onChange={props.handleQualificationChange}
+        ></input>
+        <label
+          htmlFor="courseStudied"
+          id="courseStudied"
+          name="courseStudied"
+        ></label>
+        <label htmlFor="startYear">Start Year</label>
+        <input
+          className="startYear"
+          id="startYear"
+          name="startYear"
+          value={props.eduProps.startYear}
+          onChange={props.handleQualificationChange}
+        ></input>
+        <label htmlFor="endYear">End Year</label>
+        <input
+          className="endYear"
+          id="endYear"
+          name="endYear"
+          value={props.eduProps.endYear}
+          onChange={props.handleQualificationChange}
+        ></input>
+        <button
+          className="deleteBtn"
+          onClick={props.deleteForm}
+          id={props.formId}
+        >
+          Delete Form
+        </button>
+      </form>
+    </>
+  );
+};
+
+export default Education;

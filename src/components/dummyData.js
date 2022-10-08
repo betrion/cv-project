@@ -42,5 +42,6 @@ const dummyData = {
       jobRole: "MULTI BILIONAIRE",
     },
   ],
+  editState: true,
 };
 export default dummyData;
